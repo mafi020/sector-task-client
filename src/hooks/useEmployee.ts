@@ -88,7 +88,7 @@ export const useEmployee = () => {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:5000/sectors')
+    fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/sectors`)
       .then((response) => response.json())
       .then((sectors) => setAllSectors(sectors.data))
       .catch((error) => console.error('Error fetching data:', error));
