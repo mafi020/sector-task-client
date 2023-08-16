@@ -7,13 +7,18 @@ export const useEmployee = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
+  const [addEmployeeError, setAddEmployeeError] = useState({});
+  const [updateEmployeeError, setUpdateEmployeeError] = useState({});
+
   const [allSectors, setAllSectors] = useState([]);
 
   const toggleAddModal = (val: boolean) => {
     setShowAddModal(!val);
+    setAddEmployeeError({});
   };
   const toggleUpdateModal = (val: boolean) => {
     setShowUpdateModal(!val);
+    setUpdateEmployeeError({});
   };
 
   const addEmployee = async (employee: EmployeeInterface) => {
@@ -29,8 +34,9 @@ export const useEmployee = () => {
         }
       );
 
+      const { data, err } = await response.json();
+
       if (response.ok) {
-        const { data } = await response.json();
         setEmployees((prev) => [data, ...prev]);
         toggleAddModal(showAddModal);
         notifications.show({
@@ -38,7 +44,7 @@ export const useEmployee = () => {
           message: 'Employee Added Successfully',
         });
       } else {
-        console.error('Error adding data');
+        setAddEmployeeError((prev) => ({ ...err }));
       }
     } catch (error) {
       console.error('Error adding data:', error);
@@ -58,8 +64,9 @@ export const useEmployee = () => {
         }
       );
 
+      const { data, err } = await response.json();
+
       if (response.ok) {
-        const { data } = await response.json();
         setEmployees((prev) =>
           prev.map((employee) =>
             employee._id === data._id ? { ...data } : employee
@@ -71,7 +78,7 @@ export const useEmployee = () => {
           message: 'Employee Updated Successfully',
         });
       } else {
-        console.error('Error updating data');
+        setUpdateEmployeeError((prev) => ({ ...err }));
       }
     } catch (error) {
       console.error('Error updating data:', error);
@@ -82,7 +89,7 @@ export const useEmployee = () => {
     (async () => {
       fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/employees`)
         .then((response) => response.json())
-        .then((employees) => setEmployees(employees.data))
+        .then(({ data }) => setEmployees(data))
         .catch((error) => console.error('Error fetching data:', error));
     })();
   }, []);
@@ -90,18 +97,20 @@ export const useEmployee = () => {
   useEffect(() => {
     fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/sectors`)
       .then((response) => response.json())
-      .then((sectors) => setAllSectors(sectors.data))
+      .then(({ data }) => setAllSectors(data))
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
   return {
     employees,
+    allSectors,
     showAddModal,
     showUpdateModal,
+    addEmployeeError,
+    updateEmployeeError,
     toggleAddModal,
     toggleUpdateModal,
-    updateEmployee,
-    allSectors,
     addEmployee,
+    updateEmployee,
   };
 };

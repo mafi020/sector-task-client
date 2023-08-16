@@ -15,11 +15,13 @@ import { useEmployee } from '../../../hooks/useEmployee';
 interface UpdateEmployeeProps {
   employee: EmployeeInterface;
   updateEmployee: (data: EmployeeInterface) => void;
+  updateEmployeeError: any;
 }
 
 export const UpdateEmployee = ({
   employee,
   updateEmployee,
+  updateEmployeeError,
 }: UpdateEmployeeProps) => {
   const { allSectors } = useEmployee();
 
@@ -30,17 +32,17 @@ export const UpdateEmployee = ({
       sectors: [] as string[],
       terms: true,
     },
-    validate: yupResolver(
-      Yup.object().shape({
-        name: Yup.string().required('Name is required'),
-        sectors: Yup.array()
-          .min(1, 'Sectors must not be empty')
-          .required('Sectors is required'),
-        terms: Yup.boolean()
-          .oneOf([true], 'Terms must be agreed')
-          .required('Terms must be agreed'),
-      })
-    ),
+    // validate: yupResolver(
+    //   Yup.object().shape({
+    //     name: Yup.string().required('Name is required'),
+    //     sectors: Yup.array()
+    //       .min(1, 'Sectors must not be empty')
+    //       .required('Sectors is required'),
+    //     terms: Yup.boolean()
+    //       .oneOf([true], 'Terms must be agreed')
+    //       .required('Terms must be agreed'),
+    //   })
+    // ),
   });
 
   const handleUpdate = (val: EmployeeInterface) => {
@@ -50,6 +52,10 @@ export const UpdateEmployee = ({
   useEffect(() => {
     form.setValues({ ...employee });
   }, [employee]);
+
+  useEffect(() => {
+    form.setErrors((prev: any) => ({ ...prev, ...updateEmployeeError }));
+  }, [updateEmployeeError]);
 
   return (
     <>

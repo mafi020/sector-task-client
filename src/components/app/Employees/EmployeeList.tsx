@@ -23,6 +23,8 @@ export const EmployeeList = () => {
     showAddModal,
     toggleAddModal,
     addEmployee,
+    addEmployeeError,
+    updateEmployeeError,
   } = useEmployee();
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeeInterface>();
 
@@ -62,6 +64,7 @@ export const EmployeeList = () => {
         showAddModal={showAddModal}
         toggleAddModal={toggleAddModal}
         addEmployee={addEmployee}
+        addEmployeeError={addEmployeeError}
       />
       <ScrollArea>
         <Table verticalSpacing='xs'>
@@ -99,6 +102,7 @@ export const EmployeeList = () => {
             <UpdateEmployee
               employee={selectedEmployee}
               updateEmployee={updateEmployee}
+              updateEmployeeError={updateEmployeeError}
             />
           </Modal>
         </>

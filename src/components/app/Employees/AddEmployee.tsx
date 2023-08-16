@@ -12,12 +12,17 @@ import {
 } from '@mantine/core';
 import { useEmployee } from '../../../hooks/useEmployee';
 import { EmployeeInterface } from '../../../interfaces/Employee.interface';
+import { useEffect } from 'react';
 
 interface AddEmployeeInteface {
   addEmployee: (data: EmployeeInterface) => void;
+  addEmployeeError: any;
 }
 
-export const AdddEmployee = ({ addEmployee }: AddEmployeeInteface) => {
+export const AdddEmployee = ({
+  addEmployee,
+  addEmployeeError,
+}: AddEmployeeInteface) => {
   const { allSectors } = useEmployee();
 
   const form = useForm({
@@ -38,6 +43,11 @@ export const AdddEmployee = ({ addEmployee }: AddEmployeeInteface) => {
       })
     ),
   });
+
+  useEffect(() => {
+    form.setErrors((prev: any) => ({ ...prev, ...addEmployeeError }));
+  }, [addEmployeeError]);
+
   return (
     <>
       <Text> Please enter your name and pick the Sectors.</Text>
@@ -55,6 +65,7 @@ export const AdddEmployee = ({ addEmployee }: AddEmployeeInteface) => {
           </Grid.Col>
           <Grid.Col span={12}>
             <MultiSelect
+              withAsterisk
               label='Sector'
               placeholder='Pick one'
               searchable

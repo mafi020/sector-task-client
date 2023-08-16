@@ -8,11 +8,13 @@ interface HeaderInterfcae {
   showAddModal: boolean;
   toggleAddModal: (data: boolean) => void;
   addEmployee: (data: EmployeeInterface) => void;
+  addEmployeeError: any;
 }
 export const EmployeeHeader = ({
   showAddModal,
   toggleAddModal,
   addEmployee,
+  addEmployeeError,
 }: HeaderInterfcae) => {
   return (
     <TableTitleVariationOne title='Employees'>
@@ -26,7 +28,10 @@ export const EmployeeHeader = ({
           onClose={() => toggleAddModal(showAddModal)}
           size='lg'
         >
-          <AdddEmployee addEmployee={addEmployee} />
+          <AdddEmployee
+            addEmployee={addEmployee}
+            addEmployeeError={addEmployeeError}
+          />
         </Modal>
       </>
     </TableTitleVariationOne>
