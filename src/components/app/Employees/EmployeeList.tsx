@@ -83,7 +83,7 @@ export const EmployeeList = () => {
               <tr>
                 <td colSpan={4}>
                   <Text weight={500} align='center'>
-                    Nothing found
+                    Nothing found. Click "Add Employee" to add data
                   </Text>
                 </td>
               </tr>
