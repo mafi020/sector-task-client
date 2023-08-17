@@ -66,6 +66,9 @@ export const AdddEmployee = ({
           <Grid.Col span={12}>
             <MultiSelect
               withAsterisk
+              withinPortal={true}
+              maxDropdownHeight={160}
+              dropdownPosition='bottom'
               label='Sector'
               placeholder='Pick one'
               searchable

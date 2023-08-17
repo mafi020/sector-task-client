@@ -7,8 +7,9 @@ import {
   Grid,
   MultiSelect,
   Checkbox,
+  Box,
 } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { EmployeeInterface } from '../../../interfaces/Employee.interface';
 import { useEmployee } from '../../../hooks/useEmployee';
 
@@ -32,17 +33,17 @@ export const UpdateEmployee = ({
       sectors: [] as string[],
       terms: true,
     },
-    // validate: yupResolver(
-    //   Yup.object().shape({
-    //     name: Yup.string().required('Name is required'),
-    //     sectors: Yup.array()
-    //       .min(1, 'Sectors must not be empty')
-    //       .required('Sectors is required'),
-    //     terms: Yup.boolean()
-    //       .oneOf([true], 'Terms must be agreed')
-    //       .required('Terms must be agreed'),
-    //   })
-    // ),
+    validate: yupResolver(
+      Yup.object().shape({
+        name: Yup.string().required('Name is required'),
+        sectors: Yup.array()
+          .min(1, 'Sectors must not be empty')
+          .required('Sectors is required'),
+        terms: Yup.boolean()
+          .oneOf([true], 'Terms must be agreed')
+          .required('Terms must be agreed'),
+      })
+    ),
   });
 
   const handleUpdate = (val: EmployeeInterface) => {
@@ -58,7 +59,7 @@ export const UpdateEmployee = ({
   }, [updateEmployeeError]);
 
   return (
-    <>
+    <Box>
       <form onSubmit={form.onSubmit((values) => handleUpdate(values))}>
         <Grid>
           <Grid.Col span={12}>
@@ -71,6 +72,9 @@ export const UpdateEmployee = ({
           </Grid.Col>
           <Grid.Col span={12}>
             <MultiSelect
+              withAsterisk
+              withinPortal={true}
+              maxDropdownHeight={160}
               label='Sector'
               placeholder='Pick one'
               searchable
@@ -81,6 +85,7 @@ export const UpdateEmployee = ({
               onChange={(sectors) => form.setFieldValue('sectors', sectors)}
             />
           </Grid.Col>
+
           <Grid.Col span={12}>
             <Checkbox
               mt='md'
@@ -94,6 +99,6 @@ export const UpdateEmployee = ({
           <Button type='submit'>Submit</Button>
         </Group>
       </form>
-    </>
+    </Box>
   );
 };

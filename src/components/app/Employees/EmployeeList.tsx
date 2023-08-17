@@ -26,6 +26,7 @@ export const EmployeeList = () => {
     addEmployeeError,
     updateEmployeeError,
   } = useEmployee();
+
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeeInterface>();
 
   const handleSelectEmployee = (_id: number | undefined) => {

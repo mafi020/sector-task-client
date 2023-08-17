@@ -10,7 +10,7 @@ export const useEmployee = () => {
   const [addEmployeeError, setAddEmployeeError] = useState({});
   const [updateEmployeeError, setUpdateEmployeeError] = useState({});
 
-  const [allSectors, setAllSectors] = useState([]);
+  const [allSectors, setAllSectors] = useState<string[]>([]);
 
   const toggleAddModal = (val: boolean) => {
     setShowAddModal(!val);
@@ -86,20 +86,20 @@ export const useEmployee = () => {
   };
 
   useEffect(() => {
-    (async () => {
+    !employees.length &&
       fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/employees`)
         .then((response) => response.json())
         .then(({ data }) => setEmployees(data))
         .catch((error) => console.error('Error fetching data:', error));
-    })();
-  }, []);
+  }, [employees.length]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/sectors`)
-      .then((response) => response.json())
-      .then(({ data }) => setAllSectors(data))
-      .catch((error) => console.error('Error fetching data:', error));
-  }, []);
+    !allSectors.length &&
+      fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/sectors`)
+        .then((response) => response.json())
+        .then(({ data }) => setAllSectors(data))
+        .catch((error) => console.error('Error fetching data:', error));
+  }, [allSectors.length]);
 
   return {
     employees,
